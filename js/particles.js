@@ -215,7 +215,7 @@ export class GlitterSystem {
     this.mActive = false;
     this.dpr = Math.min(window.devicePixelRatio || 1, 2);
     this.isMobile = window.innerWidth < 768;
-    this.count = this.isMobile ? 2000 : 5000;
+    this.count = this.isMobile ? 3500 : 5000;
     this.initialText = initialText;
     this.currentShape = null;
     this.ambientDust = [];
@@ -305,9 +305,10 @@ export class GlitterSystem {
 
   _applyShape(pts, shapeName) {
     this.currentShape = shapeName;
-    const scaleX = this.w * 0.38;
-    const scaleY = this.h * 0.38;
-    const offsetY = -this.h * 0.05; // slight upward offset
+    // On mobile, use a wider text spread so letters are larger and more readable
+    const scaleX = this.isMobile ? this.w * 0.55 : this.w * 0.38;
+    const scaleY = this.isMobile ? this.h * 0.28 : this.h * 0.38;
+    const offsetY = this.isMobile ? -this.h * 0.10 : -this.h * 0.05;
 
     this.particles.forEach((p, i) => {
       if (i < pts.length) {
@@ -315,9 +316,17 @@ export class GlitterSystem {
           this.cx + pts[i].x * scaleX,
           this.cy + pts[i].y * scaleY + offsetY
         );
-        p.baseAlpha = 0.3 + Math.random() * 0.55;
-        p.size = 0.3 + Math.random() * 0.9;
-        p.isHighlight = Math.random() < 0.08;
+        // On mobile: bigger particles and higher alpha for readability
+        if (this.isMobile) {
+          p.baseAlpha = 0.55 + Math.random() * 0.4;
+          p.size = 0.6 + Math.random() * 1.2;
+          p.isHighlight = Math.random() < 0.18;
+          p.glowSize = 3 + Math.random() * 5;
+        } else {
+          p.baseAlpha = 0.3 + Math.random() * 0.55;
+          p.size = 0.3 + Math.random() * 0.9;
+          p.isHighlight = Math.random() < 0.08;
+        }
       } else {
         // Excess particles float as ambient dust around the shape
         p.setTarget(
@@ -387,8 +396,8 @@ export class GlitterSystem {
 
     // COMPOSITE: Layer 1 — blurred glow (drawn from offscreen)
     mc.save();
-    mc.filter = `blur(${this.isMobile ? 3 : 5}px)`;
-    mc.globalAlpha = 0.6;
+    mc.filter = `blur(${this.isMobile ? 6 : 5}px)`;
+    mc.globalAlpha = this.isMobile ? 0.75 : 0.6;
     mc.drawImage(this._offscreen, 0, 0, this.w, this.h);
     mc.restore();
 
