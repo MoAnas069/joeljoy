@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Joel Joy | THE J — Luxury Real Estate Houston</title>
+  <meta name="description" content="Get in touch with Joel Joy. Schedule a consultation, request a home valuation, or start your luxury real estate journey today." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/index.css" />
+</head>
+<body>
+  <canvas id="particle-canvas"></canvas>
+  <nav id="main-nav" class="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo"><span class="nav__logo-j">J</span><span class="nav__logo-text">oel Joy</span></a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About Joel</a></li>
+        <li><a href="/buy.html">Buy</a></li>
+        <li><a href="/sell.html">Sell</a></li>
+        <li><a href="/communities.html">Communities</a></li>
+        <li><a href="/listings.html">Listings</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html" class="active">Contact</a></li>
+      </ul>
+      <a href="/contact.html" class="nav__cta">Home Valuation</a>
+      <button class="nav__burger" id="nav-burger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <section class="section section--page-hero">
+    <div class="page-hero__content reveal">
+      <span class="stage-label">Let's Connect</span>
+      <h1 class="page-hero__title">Get In Touch</h1>
+    </div>
+  </section>
+
+  <section class="section section--contact">
+    <div class="contact-layout">
+      <div class="contact-form-wrap reveal">
+        <h2 class="editorial-heading">Start the<br/><em>conversation.</em></h2>
+        <form class="contact-form" id="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="first-name">First Name</label>
+              <input type="text" id="first-name" name="firstName" required />
+            </div>
+            <div class="form-group">
+              <label for="last-name">Last Name</label>
+              <input type="text" id="last-name" name="lastName" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" />
+          </div>
+          <div class="form-group">
+            <label for="interest">I'm interested in</label>
+            <select id="interest" name="interest">
+              <option value="">Select an option</option>
+              <option value="buying">Buying a Home</option>
+              <option value="selling">Selling a Home</option>
+              <option value="valuation">Home Valuation</option>
+              <option value="consultation">General Consultation</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Tell Joel about your goals..."></textarea>
+          </div>
+          <button type="submit" class="btn btn--gold btn--full">Send Message</button>
+        </form>
+      </div>
+      <div class="contact-info reveal">
+        <div class="contact-info__block">
+          <h4>Office</h4>
+          <p>Joel Joy Real Estate</p>
+          <p>1234 Westheimer Road, Suite 500</p>
+          <p>Houston, TX 77006</p>
+        </div>
+        <div class="contact-info__block">
+          <h4>Direct</h4>
+          <p><a href="tel:+17135551234">(713) 555-1234</a></p>
+          <p><a href="mailto:joel@joeljoyrealestate.com">joel@joeljoyrealestate.com</a></p>
+        </div>
+        <div class="contact-info__block">
+          <h4>Hours</h4>
+          <p>Monday – Friday: 9am – 7pm</p>
+          <p>Saturday: 10am – 5pm</p>
+          <p>Sunday: By appointment</p>
+        </div>
+        <div class="contact-info__block">
+          <h4>Follow</h4>
+          <div class="contact-socials">
+            <a href="#">Instagram</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">Facebook</a>
+            <a href="#">YouTube</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand"><span class="footer__logo"><span class="nav__logo-j">J</span>oel Joy</span><p>Luxury Real Estate · Houston, Texas</p></div>
+      <div class="footer__links">
+        <div class="footer__col"><h4>Properties</h4><a href="/listings.html">Featured Listings</a><a href="/communities.html">Communities</a></div>
+        <div class="footer__col"><h4>Services</h4><a href="/buy.html">Buy</a><a href="/sell.html">Sell</a><a href="/contact.html">Home Valuation</a></div>
+        <div class="footer__col"><h4>Connect</h4><a href="tel:+17135551234">(713) 555-1234</a><a href="mailto:joel@joeljoyrealestate.com">joel@joeljoyrealestate.com</a></div>
+      </div>
+      <div class="footer__bottom"><p>&copy; 2026 Joel Joy Real Estate.</p><p>Licensed in Texas · Equal Housing Opportunity</p></div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { GlitterSystem } from '/js/particles.js';
+    import { initNavigation, initRevealAnimations } from '/js/nav.js';
+    document.fonts.ready.then(() => {
+      new GlitterSystem('particle-canvas', 'GET IN TOUCH');
+      initNavigation();
+      initRevealAnimations();
+
+      // Form submission
+      document.getElementById('contact-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        btn.textContent = 'Message Sent ✓';
+        btn.style.background = '#2ecc71';
+        btn.style.borderColor = '#2ecc71';
+        setTimeout(() => { btn.textContent = 'Send Message'; btn.style.background = ''; btn.style.borderColor = ''; }, 3000);
+      });
+    });
+  </script>
+</body>
+</html>

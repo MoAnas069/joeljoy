@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Houston Communities | THE J — Luxury Real Estate</title>
+  <meta name="description" content="Explore Houston's finest neighborhoods with Joel Joy. From Sugar Land to Katy, Cypress to Fulshear — find your perfect community." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/index.css" />
+</head>
+<body>
+  <canvas id="particle-canvas"></canvas>
+  <nav id="main-nav" class="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo"><span class="nav__logo-j">J</span><span class="nav__logo-text">oel Joy</span></a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About Joel</a></li>
+        <li><a href="/buy.html">Buy</a></li>
+        <li><a href="/sell.html">Sell</a></li>
+        <li><a href="/communities.html" class="active">Communities</a></li>
+        <li><a href="/listings.html">Listings</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+      <a href="/contact.html" class="nav__cta">Home Valuation</a>
+      <button class="nav__burger" id="nav-burger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <section class="section section--page-hero">
+    <div class="page-hero__content reveal">
+      <span class="stage-label">Discover Houston</span>
+      <h1 class="page-hero__title">Houston Communities</h1>
+    </div>
+  </section>
+
+  <section class="section section--content-block">
+    <div class="content-block reveal">
+      <h2 class="stage-headline">Every neighborhood<br/><em>tells a story.</em></h2>
+      <p class="stage-body">
+        Houston is one of America's most dynamic cities. Joel knows every community intimately —
+        the character, the lifestyle, the investment potential. Explore the neighborhoods
+        where his clients find their perfect homes.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--communities">
+    <div class="community-grid">
+      <a href="/listings.html" class="community-card reveal" id="comm-houston">
+        <div class="community-card__image"><img src="/images/community-houston.png" alt="Houston" loading="lazy" /></div>
+        <div class="community-card__content">
+          <h3>Houston</h3>
+          <p>The heart of it all. From the energy of Downtown to the elegance of River Oaks and the cultural richness of the Museum District — Houston offers an unmatched urban luxury experience.</p>
+          <span class="community-card__link">Explore listings →</span>
+        </div>
+      </a>
+      <a href="/listings.html" class="community-card reveal" id="comm-sugar-land">
+        <div class="community-card__image"><img src="/images/community-sugar-land.png" alt="Sugar Land" loading="lazy" /></div>
+        <div class="community-card__content">
+          <h3>Sugar Land</h3>
+          <p>A premier master-planned haven. Sugar Land combines top-rated schools, world-class amenities, and stunning luxury estates in a family-oriented setting minutes from Houston.</p>
+          <span class="community-card__link">Explore listings →</span>
+        </div>
+      </a>
+      <a href="/listings.html" class="community-card reveal" id="comm-katy">
+        <div class="community-card__image"><img src="/images/community-katy.png" alt="Katy" loading="lazy" /></div>
+        <div class="community-card__content">
+          <h3>Katy</h3>
+          <p>Where space meets sophistication. Katy's expansive luxury communities feature lakeside living, resort-style pools, and some of the most impressive new-construction estates in Texas.</p>
+          <span class="community-card__link">Explore listings →</span>
+        </div>
+      </a>
+      <a href="/listings.html" class="community-card reveal" id="comm-richmond">
+        <div class="community-card__image"><img src="/images/community-richmond.png" alt="Richmond" loading="lazy" /></div>
+        <div class="community-card__content">
+          <h3>Richmond</h3>
+          <p>Historic charm meets modern luxury. Richmond offers estate-sized properties, equestrian communities, and a relaxed pace of life with easy access to Houston's urban core.</p>
+          <span class="community-card__link">Explore listings →</span>
+        </div>
+      </a>
+      <a href="/listings.html" class="community-card reveal" id="comm-cypress">
+        <div class="community-card__image"><img src="/images/community-cypress.png" alt="Cypress" loading="lazy" /></div>
+        <div class="community-card__content">
+          <h3>Cypress</h3>
+          <p>Family-first luxury living. Cypress delivers award-winning schools, beautifully designed communities, and a lifestyle that balances convenience with natural beauty.</p>
+          <span class="community-card__link">Explore listings →</span>
+        </div>
+      </a>
+      <a href="/listings.html" class="community-card reveal" id="comm-pearland">
+        <div class="community-card__image"><img src="/images/community-pearland.png" alt="Pearland" loading="lazy" /></div>
+        <div class="community-card__content">
+          <h3>Pearland</h3>
+          <p>Southern comfort, elevated. Pearland's growing luxury market offers exceptional value, diverse dining, and tight-knit communities with easy access to NASA and the Medical Center.</p>
+          <span class="community-card__link">Explore listings →</span>
+        </div>
+      </a>
+      <a href="/listings.html" class="community-card reveal" id="comm-fulshear">
+        <div class="community-card__image"><img src="/images/community-fulshear.png" alt="Fulshear" loading="lazy" /></div>
+        <div class="community-card__content">
+          <h3>Fulshear</h3>
+          <p>The new frontier of luxury living. Fulshear's estate communities offer acreage, equestrian trails, and breathtaking new-construction homes in one of Houston's fastest-growing areas.</p>
+          <span class="community-card__link">Explore listings →</span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="section section--cta">
+    <div class="cta-block reveal">
+      <h2 class="stage-headline">Not sure which<br/><em>community is right?</em></h2>
+      <p class="stage-body">Joel can help you find the perfect neighborhood for your lifestyle.</p>
+      <div class="cta-buttons">
+        <a href="/contact.html" class="btn btn--gold">Ask Joel</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand"><span class="footer__logo"><span class="nav__logo-j">J</span>oel Joy</span><p>Luxury Real Estate · Houston, Texas</p></div>
+      <div class="footer__links">
+        <div class="footer__col"><h4>Properties</h4><a href="/listings.html">Featured Listings</a><a href="/communities.html">Communities</a></div>
+        <div class="footer__col"><h4>Services</h4><a href="/buy.html">Buy</a><a href="/sell.html">Sell</a><a href="/contact.html">Home Valuation</a></div>
+        <div class="footer__col"><h4>Connect</h4><a href="tel:+17135551234">(713) 555-1234</a><a href="mailto:joel@joeljoyrealestate.com">joel@joeljoyrealestate.com</a></div>
+      </div>
+      <div class="footer__bottom"><p>&copy; 2026 Joel Joy Real Estate.</p><p>Licensed in Texas · Equal Housing Opportunity</p></div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { GlitterSystem } from '/js/particles.js';
+    import { initNavigation, initRevealAnimations } from '/js/nav.js';
+    document.fonts.ready.then(() => {
+      const g = new GlitterSystem('particle-canvas', 'COMMUNITIES');
+      setTimeout(() => { g.morphToShape('skyline'); }, 2500);
+      setTimeout(() => { g.morphToText('COMMUNITIES'); }, 5000);
+      initNavigation();
+      initRevealAnimations();
+    });
+  </script>
+</body>
+</html>

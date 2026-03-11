@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Featured Listings | THE J — Luxury Real Estate Houston</title>
+  <meta name="description" content="Browse Joel Joy's featured luxury home listings in Houston, Texas. Exceptional properties at every price point." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/index.css" />
+</head>
+<body>
+  <canvas id="particle-canvas"></canvas>
+  <nav id="main-nav" class="nav">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo"><span class="nav__logo-j">J</span><span class="nav__logo-text">oel Joy</span></a>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About Joel</a></li>
+        <li><a href="/buy.html">Buy</a></li>
+        <li><a href="/sell.html">Sell</a></li>
+        <li><a href="/communities.html">Communities</a></li>
+        <li><a href="/listings.html" class="active">Listings</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+      <a href="/contact.html" class="nav__cta">Home Valuation</a>
+      <button class="nav__burger" id="nav-burger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <section class="section section--page-hero">
+    <div class="page-hero__content reveal">
+      <span class="stage-label">Curated Collection</span>
+      <h1 class="page-hero__title">Featured Homes</h1>
+    </div>
+  </section>
+
+  <section class="section section--listings">
+    <div class="listings-grid">
+      <article class="listing-card reveal" id="listing-1">
+        <div class="listing-card__image">
+          <img src="/images/property1.png" alt="Modern Luxury Estate in River Oaks" loading="lazy" />
+          <div class="listing-card__overlay"><span class="listing-card__tag">Featured</span></div>
+        </div>
+        <div class="listing-card__info">
+          <h3 class="listing-card__price">$4,250,000</h3>
+          <p class="listing-card__address">2847 River Oaks Boulevard, Houston</p>
+          <div class="listing-card__details">
+            <span><strong>5</strong> Beds</span>
+            <span><strong>6</strong> Baths</span>
+            <span><strong>7,200</strong> Sq Ft</span>
+          </div>
+        </div>
+      </article>
+      <article class="listing-card reveal" id="listing-2">
+        <div class="listing-card__image">
+          <img src="/images/property2.png" alt="Downtown Penthouse with Skyline Views" loading="lazy" />
+          <div class="listing-card__overlay"><span class="listing-card__tag">New</span></div>
+        </div>
+        <div class="listing-card__info">
+          <h3 class="listing-card__price">$2,890,000</h3>
+          <p class="listing-card__address">1200 Main St, Penthouse 4501, Houston</p>
+          <div class="listing-card__details">
+            <span><strong>3</strong> Beds</span>
+            <span><strong>4</strong> Baths</span>
+            <span><strong>4,100</strong> Sq Ft</span>
+          </div>
+        </div>
+      </article>
+      <article class="listing-card reveal" id="listing-3">
+        <div class="listing-card__image">
+          <img src="/images/property3.png" alt="Mediterranean Estate in Memorial" loading="lazy" />
+          <div class="listing-card__overlay"><span class="listing-card__tag">Exclusive</span></div>
+        </div>
+        <div class="listing-card__info">
+          <h3 class="listing-card__price">$3,750,000</h3>
+          <p class="listing-card__address">9401 Memorial Drive, Houston</p>
+          <div class="listing-card__details">
+            <span><strong>6</strong> Beds</span>
+            <span><strong>7</strong> Baths</span>
+            <span><strong>8,500</strong> Sq Ft</span>
+          </div>
+        </div>
+      </article>
+      <article class="listing-card reveal" id="listing-4">
+        <div class="listing-card__image">
+          <img src="/images/community-sugar-land.png" alt="Estate in Sugar Land" loading="lazy" />
+          <div class="listing-card__overlay"><span class="listing-card__tag">Just Listed</span></div>
+        </div>
+        <div class="listing-card__info">
+          <h3 class="listing-card__price">$1,950,000</h3>
+          <p class="listing-card__address">5612 Sweetwater Estates, Sugar Land</p>
+          <div class="listing-card__details">
+            <span><strong>5</strong> Beds</span>
+            <span><strong>5</strong> Baths</span>
+            <span><strong>6,800</strong> Sq Ft</span>
+          </div>
+        </div>
+      </article>
+      <article class="listing-card reveal" id="listing-5">
+        <div class="listing-card__image">
+          <img src="/images/community-katy.png" alt="Lakeside Estate in Katy" loading="lazy" />
+          <div class="listing-card__overlay"><span class="listing-card__tag">Premium</span></div>
+        </div>
+        <div class="listing-card__info">
+          <h3 class="listing-card__price">$2,350,000</h3>
+          <p class="listing-card__address">1801 Lakeside Manor, Katy</p>
+          <div class="listing-card__details">
+            <span><strong>4</strong> Beds</span>
+            <span><strong>5</strong> Baths</span>
+            <span><strong>5,400</strong> Sq Ft</span>
+          </div>
+        </div>
+      </article>
+      <article class="listing-card reveal" id="listing-6">
+        <div class="listing-card__image">
+          <img src="/images/community-cypress.png" alt="Modern Home in Cypress" loading="lazy" />
+          <div class="listing-card__overlay"><span class="listing-card__tag">New Build</span></div>
+        </div>
+        <div class="listing-card__info">
+          <h3 class="listing-card__price">$1,650,000</h3>
+          <p class="listing-card__address">3290 Bridgeland Way, Cypress</p>
+          <div class="listing-card__details">
+            <span><strong>4</strong> Beds</span>
+            <span><strong>4</strong> Baths</span>
+            <span><strong>4,900</strong> Sq Ft</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section section--cta">
+    <div class="cta-block reveal">
+      <h2 class="stage-headline">Don't see what<br/><em>you're looking for?</em></h2>
+      <p class="stage-body">Joel has access to exclusive off-market properties not shown here.</p>
+      <div class="cta-buttons">
+        <a href="/contact.html" class="btn btn--gold">Contact Joel</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand"><span class="footer__logo"><span class="nav__logo-j">J</span>oel Joy</span><p>Luxury Real Estate · Houston, Texas</p></div>
+      <div class="footer__links">
+        <div class="footer__col"><h4>Properties</h4><a href="/listings.html">Featured Listings</a><a href="/communities.html">Communities</a></div>
+        <div class="footer__col"><h4>Services</h4><a href="/buy.html">Buy</a><a href="/sell.html">Sell</a><a href="/contact.html">Home Valuation</a></div>
+        <div class="footer__col"><h4>Connect</h4><a href="tel:+17135551234">(713) 555-1234</a><a href="mailto:joel@joeljoyrealestate.com">joel@joeljoyrealestate.com</a></div>
+      </div>
+      <div class="footer__bottom"><p>&copy; 2026 Joel Joy Real Estate.</p><p>Licensed in Texas · Equal Housing Opportunity</p></div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { GlitterSystem } from '/js/particles.js';
+    import { initNavigation, initRevealAnimations } from '/js/nav.js';
+    document.fonts.ready.then(() => {
+      const g = new GlitterSystem('particle-canvas', 'FEATURED HOMES');
+      setTimeout(() => { g.morphToShape('house'); }, 2500);
+      setTimeout(() => { g.morphToText('FEATURED HOMES'); }, 5000);
+      initNavigation();
+      initRevealAnimations();
+    });
+  </script>
+</body>
+</html>
