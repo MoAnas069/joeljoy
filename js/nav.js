@@ -29,8 +29,12 @@ export function initNavigation() {
       burger.classList.toggle('active');
       links.classList.toggle('mobile-open');
       if (cta) cta.classList.toggle('mobile-open');
-      // Notify particle system to pause/resume
       const isOpen = links.classList.contains('mobile-open');
+      // Expand nav to full viewport so fixed menu isn't clipped
+      nav.classList.toggle('menu-open', isOpen);
+      // Lock body scroll so menu fills full viewport
+      document.body.style.overflow = isOpen ? 'hidden' : '';
+      // Notify particle system to pause/resume
       document.dispatchEvent(new CustomEvent('menu-toggle', { detail: { open: isOpen } }));
     });
 
@@ -39,6 +43,8 @@ export function initNavigation() {
         burger.classList.remove('active');
         links.classList.remove('mobile-open');
         if (cta) cta.classList.remove('mobile-open');
+        nav.classList.remove('menu-open');
+        document.body.style.overflow = '';
         document.dispatchEvent(new CustomEvent('menu-toggle', { detail: { open: false } }));
       });
     });

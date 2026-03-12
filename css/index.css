@@ -992,6 +992,17 @@ button, input, select, textarea {
   .nav__cta:not(.mobile-open) { display: none; }
   .nav__burger { display: flex; z-index: 1100; }
 
+  /* When menu is open, expand nav to full viewport.
+     This prevents backdrop-filter from creating a new containing block
+     that clips the fixed-position menu overlay. */
+  .nav.menu-open {
+    height: 100vh;
+    height: 100dvh;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: transparent;
+  }
+
   /* ─── PREMIUM MOBILE MENU OVERLAY ─────────── */
   .nav__links.mobile-open {
     display: flex;
