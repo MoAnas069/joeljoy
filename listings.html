@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/index.css" />
 </head>
 <body>
-  <canvas id="particle-canvas"></canvas>
+  <div class="page-shimmer"></div>
   <nav id="main-nav" class="nav">
     <div class="nav__inner">
       <a href="/" class="nav__logo"><span class="nav__logo-j">J</span><span class="nav__logo-text">oel Joy</span></a>
@@ -155,15 +155,9 @@
   </footer>
 
   <script type="module">
-    import { GlitterSystem } from '/js/particles.js';
     import { initNavigation, initRevealAnimations } from '/js/nav.js';
-    document.fonts.ready.then(() => {
-      const g = new GlitterSystem('particle-canvas', 'FEATURED HOMES');
-      setTimeout(() => { g.morphToShape('house'); }, 2500);
-      setTimeout(() => { g.morphToText('FEATURED HOMES'); }, 5000);
-      initNavigation();
-      initRevealAnimations();
-    });
+    initNavigation();
+    initRevealAnimations();
   </script>
 </body>
 </html>

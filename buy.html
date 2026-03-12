@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/index.css" />
 </head>
 <body>
-  <canvas id="particle-canvas"></canvas>
+  <div class="page-shimmer"></div>
 
   <nav id="main-nav" class="nav">
     <div class="nav__inner">
@@ -116,16 +116,9 @@
   </footer>
 
   <script type="module">
-    import { GlitterSystem } from '/js/particles.js';
     import { initNavigation, initRevealAnimations } from '/js/nav.js';
-    document.fonts.ready.then(() => {
-      const g = new GlitterSystem('particle-canvas', 'BUY WITH JOEL');
-      // Brief house morph before settling on title
-      setTimeout(() => { g.morphToShape('house'); }, 2500);
-      setTimeout(() => { g.morphToText('BUY WITH JOEL'); }, 5000);
-      initNavigation();
-      initRevealAnimations();
-    });
+    initNavigation();
+    initRevealAnimations();
   </script>
 </body>
 </html>

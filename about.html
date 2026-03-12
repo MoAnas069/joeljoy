@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="/css/index.css" />
 </head>
 <body>
-  <canvas id="particle-canvas"></canvas>
+  <div class="page-shimmer"></div>
 
   <nav id="main-nav" class="nav">
     <div class="nav__inner">
@@ -136,14 +136,10 @@
   </footer>
 
   <script type="module">
-    import { GlitterSystem } from '/js/particles.js';
     import { initNavigation, initRevealAnimations, initCountUp } from '/js/nav.js';
-    document.fonts.ready.then(() => {
-      new GlitterSystem('particle-canvas', 'ABOUT JOEL');
-      initNavigation();
-      initRevealAnimations();
-      initCountUp();
-    });
+    initNavigation();
+    initRevealAnimations();
+    initCountUp();
   </script>
 </body>
 </html>
