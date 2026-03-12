@@ -29,6 +29,9 @@ export function initNavigation() {
       burger.classList.toggle('active');
       links.classList.toggle('mobile-open');
       if (cta) cta.classList.toggle('mobile-open');
+      // Notify particle system to pause/resume
+      const isOpen = links.classList.contains('mobile-open');
+      document.dispatchEvent(new CustomEvent('menu-toggle', { detail: { open: isOpen } }));
     });
 
     links.querySelectorAll('a').forEach(a => {
@@ -36,6 +39,7 @@ export function initNavigation() {
         burger.classList.remove('active');
         links.classList.remove('mobile-open');
         if (cta) cta.classList.remove('mobile-open');
+        document.dispatchEvent(new CustomEvent('menu-toggle', { detail: { open: false } }));
       });
     });
   }

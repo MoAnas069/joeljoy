@@ -215,10 +215,12 @@ export class GlitterSystem {
     this.mActive = false;
     this.dpr = Math.min(window.devicePixelRatio || 1, 2);
     this.isMobile = window.innerWidth < 768;
-    this.count = this.isMobile ? 3500 : 5000;
+    this.count = this.isMobile ? 2000 : 5000;
     this.initialText = initialText;
     this.currentShape = null;
     this.ambientDust = [];
+    this._paused = false;
+    this._rafId = null;
 
     // Offscreen canvas for glow compositing
     this._offscreen = document.createElement('canvas');
@@ -340,12 +342,39 @@ export class GlitterSystem {
     });
   }
 
+  pause() {
+    if (this._paused) return;
+    this._paused = true;
+    if (this._rafId) {
+      cancelAnimationFrame(this._rafId);
+      this._rafId = null;
+    }
+  }
+
+  resume() {
+    if (!this._paused) return;
+    this._paused = false;
+    this._rafId = requestAnimationFrame(ts => this._loop(ts));
+  }
+
   _bind() {
     window.addEventListener('resize', () => {
       this._resize();
       if (this.currentShape === 'text') {
         this.morphToText(this.initialText);
       }
+    });
+
+    // Pause when tab is hidden
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) this.pause();
+      else this.resume();
+    });
+
+    // Pause/resume on mobile menu toggle
+    document.addEventListener('menu-toggle', e => {
+      if (e.detail && e.detail.open) this.pause();
+      else this.resume();
     });
 
     window.addEventListener('mousemove', e => {
@@ -365,6 +394,8 @@ export class GlitterSystem {
   }
 
   _loop(ts) {
+    if (this._paused) return;
+
     const t = ts * 0.001;
     const oc = this._offCtx;
     const mc = this.ctx;
@@ -394,16 +425,18 @@ export class GlitterSystem {
     }
     oc.globalAlpha = 1;
 
-    // COMPOSITE: Layer 1 — blurred glow (drawn from offscreen)
-    mc.save();
-    mc.filter = `blur(${this.isMobile ? 6 : 5}px)`;
-    mc.globalAlpha = this.isMobile ? 0.75 : 0.6;
-    mc.drawImage(this._offscreen, 0, 0, this.w, this.h);
-    mc.restore();
+    // COMPOSITE: Layer 1 — blurred glow (skip on mobile for performance)
+    if (!this.isMobile) {
+      mc.save();
+      mc.filter = 'blur(5px)';
+      mc.globalAlpha = 0.6;
+      mc.drawImage(this._offscreen, 0, 0, this.w, this.h);
+      mc.restore();
+    }
 
     // COMPOSITE: Layer 2 — sharp crisp particles on top
     mc.drawImage(this._offscreen, 0, 0, this.w, this.h);
 
-    requestAnimationFrame(ts2 => this._loop(ts2));
+    this._rafId = requestAnimationFrame(ts2 => this._loop(ts2));
   }
 }
