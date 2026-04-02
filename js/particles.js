@@ -314,7 +314,7 @@ export class GlitterSystem {
       this.initialText,
       { width: this.w * this.dpr, height: this.h * this.dpr },
       surfaceCount,
-      this.isMobile ? Math.min(this.w * 0.55, this.h * 0.45) : Math.min(this.w * 0.35, this.h * 0.55)
+      this.isMobile ? Math.min(this.w * 0.75, this.h * 0.60) : Math.min(this.w * 0.35, this.h * 0.55)
     );
 
     this.edgePointsData = edgePoints.map(p => ({
@@ -352,7 +352,7 @@ export class GlitterSystem {
       text,
       { width: this.w * this.dpr, height: this.h * this.dpr },
       surfaceCount,
-      this.isMobile ? Math.min(this.w * 0.55, this.h * 0.45) : Math.min(this.w * 0.35, this.h * 0.55)
+      this.isMobile ? Math.min(this.w * 0.75, this.h * 0.60) : Math.min(this.w * 0.35, this.h * 0.55)
     );
 
     this.edgePointsData = edgePoints.map(p => ({
