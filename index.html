@@ -7,7 +7,7 @@
   <meta name="description" content="Joel Joy Real Estate — Helping clients buy and sell exceptional homes in Houston, Texas. Experience luxury living with Houston's premier realtor." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;0,6..96,900;1,6..96,400;1,6..96,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/index.css" />
 </head>
 <body>
@@ -39,38 +39,15 @@
   <!-- ═══════════════════════════════════════════════════════════ -->
   <section id="hero" class="section section--hero">
     <div class="hero__content reveal">
-      <p class="hero__label">Joel Joy Real Estate</p>
-      <h1 class="hero__headline">
-        Helping clients buy and sell<br/>
-        <em>exceptional homes</em> in Houston, Texas.
-      </h1>
+      <div class="hero__slogan">
+        <span>Where your Real Estate journey begins</span>
+      </div>
       <div class="hero__buttons">
-        <a href="/listings.html" class="btn btn--gold">View Listings</a>
-        <a href="/contact.html" class="btn btn--outline">Schedule Consultation</a>
-      </div>
-    </div>
-    <div class="hero__scroll-hint">
-      <span>Scroll to explore</span>
-      <div class="hero__scroll-line"></div>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════════════════════════════════════════ -->
-  <!-- TRUST INDICATORS                                           -->
-  <!-- ═══════════════════════════════════════════════════════════ -->
-  <section id="trust" class="section section--trust">
-    <div class="trust-grid reveal">
-      <div class="trust-stat">
-        <span class="trust-stat__number" data-count="15" data-suffix="+">0</span>
-        <span class="trust-stat__label">Years of Experience</span>
-      </div>
-      <div class="trust-stat">
-        <span class="trust-stat__number" data-count="500" data-suffix="+">0</span>
-        <span class="trust-stat__label">Homes Sold</span>
-      </div>
-      <div class="trust-stat">
-        <span class="trust-stat__number" data-count="250" data-prefix="$" data-suffix="M+">0</span>
-        <span class="trust-stat__label">Total Sales Volume</span>
+        <div class="hero__buttons-row">
+          <a href="/buy.html" class="btn btn--gold-luxe" id="cta-buy">Buy a Home</a>
+          <a href="/sell.html" class="btn btn--gold-luxe" id="cta-sell">Sell Your Property</a>
+        </div>
+        <a href="/contact.html" class="btn btn--outline-luxe" id="cta-consultation">Schedule Consultation</a>
       </div>
     </div>
   </section>
@@ -124,13 +101,55 @@
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- TESTIMONIALS                                                -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <section id="testimonials" class="section section--testimonials">
+    <div class="testimonials-header reveal">
+      <span class="stage-label">Client Stories</span>
+      <h2 class="stage-headline">What clients say about <em>Joel.</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal" id="testimonial-1">
+        <div class="testimonial-card__stars">★★★★★</div>
+        <blockquote class="testimonial-card__quote">
+          "Our home had been on the market for months with another agent and no results. Joel took over and sold it in just 5 days — above asking price. His marketing strategy and negotiation skills are unmatched."
+        </blockquote>
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">The Martinez Family</span>
+          <span class="testimonial-card__detail">Sugar Land, TX — Sold in 5 days</span>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" id="testimonial-2">
+        <div class="testimonial-card__stars">★★★★★</div>
+        <blockquote class="testimonial-card__quote">
+          "Joel's communication throughout our buying process was exceptional. He responded to every question within minutes and made us feel like his only client. We found our dream home in Katy thanks to his expertise."
+        </blockquote>
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">David & Sarah Chen</span>
+          <span class="testimonial-card__detail">Katy, TX — First-time luxury buyers</span>
+        </div>
+      </div>
+      <div class="testimonial-card reveal" id="testimonial-3">
+        <div class="testimonial-card__stars">★★★★★</div>
+        <blockquote class="testimonial-card__quote">
+          "Professional, reliable, and genuinely invested in our success. Joel guided us through both selling our old home and purchasing our new one simultaneously — with zero stress. Truly a rare find in real estate."
+        </blockquote>
+        <div class="testimonial-card__author">
+          <span class="testimonial-card__name">Michael & Angela Brooks</span>
+          <span class="testimonial-card__detail">Cypress, TX — Simultaneous buy & sell</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
   <!-- FOOTER                                                      -->
   <!-- ═══════════════════════════════════════════════════════════ -->
   <footer class="footer">
     <div class="footer__inner">
       <div class="footer__brand">
         <span class="footer__logo"><span class="nav__logo-j">J</span>oel Joy</span>
-        <p>Luxury Real Estate · Houston, Texas</p>
+        <p>Joel Joy | SaveLine Group · Houston, Texas</p>
       </div>
       <div class="footer__links">
         <div class="footer__col">
@@ -154,7 +173,7 @@
         </div>
       </div>
       <div class="footer__bottom">
-        <p>&copy; 2026 Joel Joy Real Estate. All rights reserved.</p>
+        <p>&copy; 2026 Joel Joy | SaveLine Group. All rights reserved.</p>
         <p>Licensed in Texas · Equal Housing Opportunity</p>
       </div>
     </div>

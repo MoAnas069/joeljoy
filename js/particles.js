@@ -1,182 +1,175 @@
 /* ═══════════════════════════════════════════════════════════════
-   MICRO-GLITTER PARTICLE SYSTEM — "The Golden Journey"
-   Ultra-fine gold dust particles that form text and shapes.
-   Particles appear as microscopic metallic powder, not spheres.
+   JR GROUP — CINEMATIC GOLD DUST PARTICLE SYSTEM
+   Three-layer premium particle animation with logo integration,
+   edge highlighting, shimmer, cursor interaction, and breathing glow.
    ═══════════════════════════════════════════════════════════════ */
 
-// ─── TEXT SAMPLING ────────────────────────────────────────────
+// ─── GOLD PALETTE ────────────────────────────────────────────
 
-function sampleTextPoints(text, targetCount = 3000) {
-  const canvas = document.createElement('canvas');
-  const size = 1200;
-  canvas.width = size;
-  canvas.height = size / 3;
-  const ctx = canvas.getContext('2d');
+const GOLD = [
+  [212, 175, 55],   // Classic gold
+  [228, 200, 110],  // Light gold
+  [197, 160, 40],   // Deep gold
+  [240, 225, 170],  // Pale shimmer
+  [170, 135, 25],   // Dark accent
+  [255, 235, 180],  // Bright highlight
+];
+
+function goldColor(idx) {
+  const c = GOLD[idx % GOLD.length];
+  return c;
+}
+
+// ─── TEXT / LOGO SAMPLING ────────────────────────────────────
+
+function sampleLogoPoints(text, canvas, targetCount, fontSize) {
+  const w = canvas.width;
+  const h = canvas.height;
+  const tmp = document.createElement('canvas');
+  tmp.width = w;
+  tmp.height = h;
+  const ctx = tmp.getContext('2d');
+
+  const size = fontSize || Math.min(w * 0.38, h * 0.6);
   ctx.fillStyle = '#fff';
-
-  // Use a large bold font for clean sampling
-  const fontSize = Math.min(size / (text.length * 0.65), size / 3 * 0.8);
-  ctx.font = `700 ${fontSize}px 'Playfair Display', serif`;
+  ctx.font = `900 ${size}px 'Bodoni Moda', 'Playfair Display', serif`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(text, size / 2, size / 3 / 2);
+  ctx.fillText(text, w / 2, h / 2 - h * 0.06);
 
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const imgData = ctx.getImageData(0, 0, w, h);
   const points = [];
-  const step = Math.max(1, Math.floor(Math.sqrt((canvas.width * canvas.height) / (targetCount * 2.5))));
+  const edgePoints = [];
+  const step = Math.max(1, Math.floor(Math.sqrt((w * h) / (targetCount * 3))));
 
-  for (let y = 0; y < canvas.height; y += step) {
-    for (let x = 0; x < canvas.width; x += step) {
-      if (imgData.data[(y * canvas.width + x) * 4 + 3] > 100) {
-        points.push({
-          x: (x / canvas.width - 0.5) * 2,
-          y: (y / canvas.height - 0.5) * 2
-        });
+  for (let y = 0; y < h; y += step) {
+    for (let x = 0; x < w; x += step) {
+      const idx = (y * w + x) * 4;
+      const a = imgData.data[idx + 3];
+      if (a > 80) {
+        points.push({ x, y, isEdge: false });
+
+        // Detect edges — check if any neighbor is transparent
+        let isEdge = false;
+        for (const [dx, dy] of [[-step,0],[step,0],[0,-step],[0,step]]) {
+          const nx = x + dx, ny = y + dy;
+          if (nx < 0 || ny < 0 || nx >= w || ny >= h) { isEdge = true; break; }
+          const ni = (ny * w + nx) * 4;
+          if (imgData.data[ni + 3] < 80) { isEdge = true; break; }
+        }
+        if (isEdge) edgePoints.push({ x, y });
       }
     }
   }
-  return points;
+  return { points, edgePoints };
 }
 
-// ─── SHAPE GENERATORS ─────────────────────────────────────────
+// ─── LAYER 1: BACKGROUND ATMOSPHERE PARTICLE ─────────────────
 
-function generateSkylineShape(count) {
-  const pts = [];
-  const buildings = [
-    { x: -0.8, w: 0.1, h: 0.3 }, { x: -0.65, w: 0.08, h: 0.55 },
-    { x: -0.5, w: 0.12, h: 0.45 }, { x: -0.35, w: 0.06, h: 0.7 },
-    { x: -0.22, w: 0.1, h: 0.5 }, { x: -0.08, w: 0.08, h: 0.88 },
-    { x: 0.04, w: 0.1, h: 0.6 }, { x: 0.18, w: 0.07, h: 0.78 },
-    { x: 0.28, w: 0.12, h: 0.4 }, { x: 0.44, w: 0.08, h: 0.55 },
-    { x: 0.56, w: 0.1, h: 0.35 }, { x: 0.7, w: 0.12, h: 0.28 },
-  ];
-  const per = Math.floor(count / buildings.length);
-  buildings.forEach(b => {
-    for (let i = 0; i < per; i++) {
-      const r = Math.random();
-      const base = 0.4;
-      if (r < 0.4) pts.push({ x: b.x + Math.random() * b.w, y: base - b.h });
-      else if (r < 0.7) pts.push({ x: b.x, y: base - Math.random() * b.h });
-      else pts.push({ x: b.x + b.w, y: base - Math.random() * b.h });
-    }
-  });
-  for (let i = 0; i < 80; i++) pts.push({ x: -0.9 + Math.random() * 1.8, y: 0.4 });
-  return pts;
-}
-
-function generateHouseShape(count) {
-  const pts = [];
-  for (let i = 0; i < count; i++) {
-    const r = Math.random();
-    let x, y;
-    if (r < 0.3) { // roof left slope
-      const t = Math.random();
-      x = -0.4 + t * 0.4; y = 0.1 - t * 0.4;
-    } else if (r < 0.6) { // roof right slope
-      const t = Math.random();
-      x = t * 0.4; y = -0.3 + t * 0.4;
-    } else if (r < 0.7) { // left wall
-      x = -0.4; y = 0.1 + Math.random() * 0.4;
-    } else if (r < 0.8) { // right wall
-      x = 0.4; y = 0.1 + Math.random() * 0.4;
-    } else if (r < 0.9) { // bottom
-      x = -0.4 + Math.random() * 0.8; y = 0.5;
-    } else { // door
-      x = -0.08 + Math.random() * 0.16; y = 0.25 + Math.random() * 0.25;
-    }
-    pts.push({ x, y });
+class AtmosphereParticle {
+  constructor(w, h) {
+    this.x = Math.random() * w;
+    this.y = Math.random() * h;
+    this.size = 0.15 + Math.random() * 0.35;
+    this.baseAlpha = 0.02 + Math.random() * 0.06;
+    this.alpha = this.baseAlpha;
+    this.vx = (Math.random() - 0.5) * 0.08;
+    this.vy = -0.02 - Math.random() * 0.06;
+    this.shimmerSpeed = 0.3 + Math.random() * 1.2;
+    this.shimmerOffset = Math.random() * Math.PI * 2;
+    this.color = goldColor(Math.floor(Math.random() * GOLD.length));
+    this.w = w;
+    this.h = h;
   }
-  return pts;
-}
 
-function generateKeyShape(count) {
-  const pts = [];
-  for (let i = 0; i < count; i++) {
-    const r = Math.random();
-    let x, y;
-    if (r < 0.3) { // bow circle
-      const a = Math.random() * Math.PI * 2;
-      const rad = 0.2 + Math.random() * 0.03;
-      x = Math.cos(a) * rad; y = -0.35 + Math.sin(a) * rad;
-    } else if (r < 0.35) { // inner bow
-      const a = Math.random() * Math.PI * 2;
-      const rad = 0.09;
-      x = Math.cos(a) * rad; y = -0.35 + Math.sin(a) * rad;
-    } else if (r < 0.65) { // shaft
-      x = (Math.random() - 0.5) * 0.05; y = -0.15 + Math.random() * 0.65;
-    } else if (r < 0.8) { // teeth horizontal
-      const t = Math.floor(Math.random() * 3);
-      x = 0.025 + Math.random() * 0.14; y = 0.32 + t * 0.08;
-    } else { // teeth vertical
-      const t = Math.floor(Math.random() * 3);
-      x = 0.14; y = 0.3 + t * 0.08 + Math.random() * 0.06;
-    }
-    pts.push({ x, y });
+  update(t) {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.y < -5) { this.y = this.h + 5; this.x = Math.random() * this.w; }
+    if (this.x < -5) this.x = this.w + 5;
+    if (this.x > this.w + 5) this.x = -5;
+    this.alpha = this.baseAlpha + Math.sin(t * this.shimmerSpeed + this.shimmerOffset) * 0.02;
   }
-  return pts;
+
+  draw(ctx) {
+    if (this.alpha < 0.01) return;
+    const [r, g, b] = this.color;
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle = `rgb(${r},${g},${b})`;
+    ctx.fillRect(this.x, this.y, this.size, this.size);
+  }
 }
 
-// ─── MICRO PARTICLE ───────────────────────────────────────────
+// ─── LAYER 2: LOGO SURFACE PARTICLE ──────────────────────────
 
-class MicroParticle {
+class SurfaceParticle {
   constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.tx = x;
-    this.ty = y;
+    this.homeX = x;
+    this.homeY = y;
+    this.x = x + (Math.random() - 0.5) * 600;
+    this.y = y + (Math.random() - 0.5) * 600;
     this.vx = 0;
     this.vy = 0;
-    // Micro-glitter: fine but visible, 0.5 to 1.8px
-    this.size = 0.5 + Math.random() * 1.3;
-    this.baseAlpha = 0.45 + Math.random() * 0.45;
-    this.alpha = this.baseAlpha;
-    // Sparkle: random shimmer
-    this.shimmerSpeed = 1 + Math.random() * 4;
-    this.shimmerOffset = Math.random() * Math.PI * 2;
-    this.shimmerIntensity = 0.15 + Math.random() * 0.35;
-    // Drift
+    this.size = 0.6 + Math.random() * 1.2;
+    this.baseAlpha = 0.55 + Math.random() * 0.35;
+    this.alpha = 0;
+
+    // Multi-frequency shimmer for metallic effect
+    this.shimSpeed1 = 0.6 + Math.random() * 2.0;
+    this.shimSpeed2 = 2.0 + Math.random() * 3.5;
+    this.shimOff1 = Math.random() * Math.PI * 2;
+    this.shimOff2 = Math.random() * Math.PI * 2;
+    this.shimInt = 0.12 + Math.random() * 0.25;
+
+    // Micro-drift (doesn't leave letter shape)
     this.driftAngle = Math.random() * Math.PI * 2;
-    this.driftSpeed = 0.0005 + Math.random() * 0.001;
-    this.driftRadius = 0.2 + Math.random() * 0.5;
-    // Physics
-    this.ease = 0.025 + Math.random() * 0.025;
-    this.friction = 0.93;
-    // Sparkle highlight: ~15% particles flash brighter with glow
-    this.isHighlight = Math.random() < 0.15;
-    // Glow radius for this particle
-    this.glowSize = 2 + Math.random() * 4;
+    this.driftSpeed = 0.0001 + Math.random() * 0.0004;
+    this.driftRadius = 0.1 + Math.random() * 0.25;
+
+    this.ease = 0.015 + Math.random() * 0.02;
+    this.friction = 0.94;
+
+    this.color = goldColor(Math.floor(Math.random() * GOLD.length));
+    this.isHighlight = Math.random() < 0.25;
+
+    // Track if particle is scattered by cursor
+    this.scattered = false;
   }
 
-  setTarget(x, y) {
-    this.tx = x;
-    this.ty = y;
-  }
+  update(t, mx, my, mActive, breathe, cursorOnLogo) {
+    // Metallic shimmer
+    const s1 = Math.sin(t * this.shimSpeed1 + this.shimOff1);
+    const s2 = Math.sin(t * this.shimSpeed2 + this.shimOff2) * 0.35;
+    this.alpha = this.baseAlpha + (s1 + s2) * this.shimInt;
 
-  update(t, mx, my, mActive) {
-    // Shimmer / sparkle
-    const shimmer = Math.sin(t * this.shimmerSpeed + this.shimmerOffset);
-    this.alpha = this.baseAlpha + shimmer * this.shimmerIntensity;
-    if (this.isHighlight && shimmer > 0.7) {
-      this.alpha = Math.min(1, this.alpha + 0.3);
+    // Breathing glow
+    this.alpha += breathe * 0.08;
+
+    if (this.isHighlight && s1 > 0.5) {
+      this.alpha = Math.min(1, this.alpha + 0.35);
     }
+    this.alpha = Math.max(0, Math.min(1, this.alpha));
 
-    // Subtle drift
+    // Micro drift
     this.driftAngle += this.driftSpeed;
-    const dx = this.tx - this.x + Math.cos(this.driftAngle) * this.driftRadius;
-    const dy = this.ty - this.y + Math.sin(this.driftAngle) * this.driftRadius;
+    const dx = this.homeX - this.x + Math.cos(this.driftAngle) * this.driftRadius;
+    const dy = this.homeY - this.y + Math.sin(this.driftAngle) * this.driftRadius;
 
     this.vx += dx * this.ease;
     this.vy += dy * this.ease;
 
-    // Mouse: gentle repulsion like dust in air
+    // Cursor interaction — scatter particles when cursor is over the logo
     if (mActive) {
-      const mdx = this.x - mx;
-      const mdy = this.y - my;
-      const dist = Math.sqrt(mdx * mdx + mdy * mdy);
-      if (dist < 100) {
-        const force = (1 - dist / 100) * 4;
-        this.vx += (mdx / (dist || 1)) * force;
-        this.vy += (mdy / (dist || 1)) * force;
+      const cdx = this.x - mx;
+      const cdy = this.y - my;
+      const dist = Math.sqrt(cdx * cdx + cdy * cdy);
+      if (dist < 150) {
+        // Strong scatter — send particles flying across the page
+        const force = (1 - dist / 150) * 8;
+        this.vx += (cdx / (dist || 1)) * force;
+        this.vy += (cdy / (dist || 1)) * force;
+        this.alpha = Math.min(1, this.alpha + 0.3);
+        this.scattered = true;
       }
     }
 
@@ -187,40 +180,99 @@ class MicroParticle {
   }
 
   draw(ctx) {
-    if (this.alpha < 0.05) return;
-
-    // Core micro dot
+    if (this.alpha < 0.03) return;
+    const [r, g, b] = this.color;
     ctx.globalAlpha = this.alpha;
+    ctx.fillStyle = `rgb(${r},${g},${b})`;
     ctx.fillRect(this.x - this.size * 0.5, this.y - this.size * 0.5, this.size, this.size);
 
-    // Highlight sparkle: brighter + larger dot
+    // Highlight particles get a soft glow
     if (this.isHighlight && this.alpha > 0.5) {
-      ctx.globalAlpha = this.alpha * 0.55;
+      ctx.globalAlpha = this.alpha * 0.3;
       const s2 = this.size * 2.2;
       ctx.fillRect(this.x - s2 * 0.5, this.y - s2 * 0.5, s2, s2);
     }
   }
 }
 
-// ─── PARTICLE SYSTEM ──────────────────────────────────────────
+// ─── LAYER 3: EDGE ACCENT PARTICLE ──────────────────────────
+
+class EdgeParticle {
+  constructor(edgePoints) {
+    this.edgePoints = edgePoints;
+    this.progress = Math.random();
+    this.speed = 0.0002 + Math.random() * 0.0005;
+    this.size = 0.25 + Math.random() * 0.4;
+    this.baseAlpha = 0;
+    this.alpha = 0;
+    this.color = goldColor(Math.floor(Math.random() * 3)); // brighter golds
+    this.lifePhase = Math.random() * Math.PI * 2;
+    this.lifeSpeed = 0.15 + Math.random() * 0.3;
+    this.x = 0;
+    this.y = 0;
+    this.active = false;
+    this.cooldown = Math.random() * 400; // stagger starts
+  }
+
+  update(t) {
+    if (this.edgePoints.length === 0) return;
+
+    this.cooldown--;
+    if (this.cooldown > 0) return;
+
+    this.active = true;
+    this.progress += this.speed;
+    if (this.progress >= 1) {
+      this.progress = 0;
+      this.cooldown = 200 + Math.random() * 600; // pause before next pass
+      this.active = false;
+      return;
+    }
+
+    // Life cycle — fade in, sustain, fade out
+    this.lifePhase += this.lifeSpeed * 0.016;
+    const lifeCurve = Math.sin(this.progress * Math.PI); // 0→1→0 over edge path
+    this.alpha = lifeCurve * 0.4;
+
+    // Position along edge path
+    const idx = Math.floor(this.progress * this.edgePoints.length);
+    const pt = this.edgePoints[Math.min(idx, this.edgePoints.length - 1)];
+    this.x = pt.x + (Math.random() - 0.5) * 1.5;
+    this.y = pt.y + (Math.random() - 0.5) * 1.5;
+  }
+
+  draw(ctx) {
+    if (!this.active || this.alpha < 0.02) return;
+    const [r, g, b] = this.color;
+    ctx.globalAlpha = this.alpha;
+    ctx.fillStyle = `rgb(${r},${g},${b})`;
+    ctx.fillRect(this.x - this.size * 0.5, this.y - this.size * 0.5, this.size, this.size);
+  }
+}
+
+// ─── MAIN SYSTEM ─────────────────────────────────────────────
 
 export class GlitterSystem {
-  constructor(canvasId, initialText = 'THE J') {
+  constructor(canvasId, initialText = 'JR') {
     this.canvas = document.getElementById(canvasId);
     if (!this.canvas) return;
     this.ctx = this.canvas.getContext('2d');
-    this.particles = [];
-    this.mx = 0;
-    this.my = 0;
+    this.initialText = initialText;
+
+    this.mx = -9999;
+    this.my = -9999;
     this.mActive = false;
     this.dpr = Math.min(window.devicePixelRatio || 1, 2);
     this.isMobile = window.innerWidth < 768;
-    this.count = this.isMobile ? 2000 : 5000;
-    this.initialText = initialText;
-    this.currentShape = null;
-    this.ambientDust = [];
+
     this._paused = false;
     this._rafId = null;
+
+    // Particle arrays
+    this.atmosphereParticles = [];
+    this.surfaceParticles = [];
+    this.edgeParticles = [];
+    this.edgePointsData = [];
 
     // Offscreen canvas for glow compositing
     this._offscreen = document.createElement('canvas');
@@ -240,7 +292,6 @@ export class GlitterSystem {
     this.canvas.style.width = w + 'px';
     this.canvas.style.height = h + 'px';
     this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
-    // Sync offscreen canvas size
     this._offscreen.width = w * this.dpr;
     this._offscreen.height = h * this.dpr;
     this._offCtx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
@@ -251,104 +302,89 @@ export class GlitterSystem {
   }
 
   _init() {
-    // Create particles — scattered across viewport
-    for (let i = 0; i < this.count; i++) {
-      const x = Math.random() * this.w;
-      const y = Math.random() * this.h;
-      this.particles.push(new MicroParticle(x, y));
+    // ─── Layer 1: Background Atmosphere ───
+    const atmCount = this.isMobile ? 80 : 220;
+    for (let i = 0; i < atmCount; i++) {
+      this.atmosphereParticles.push(new AtmosphereParticle(this.w, this.h));
     }
 
-    // Ambient micro-dust (always floating, very subtle)
-    const dustCount = this.isMobile ? 40 : 120;
-    for (let i = 0; i < dustCount; i++) {
-      this.ambientDust.push({
-        x: Math.random() * this.w,
-        y: Math.random() * this.h,
-        size: 0.2 + Math.random() * 0.4,
-        alpha: 0.05 + Math.random() * 0.12,
-        vx: (Math.random() - 0.5) * 0.15,
-        vy: -0.05 - Math.random() * 0.15
-      });
+    // ─── Sample logo text ───
+    const surfaceCount = this.isMobile ? 4000 : 8000;
+    const { points, edgePoints } = sampleLogoPoints(
+      this.initialText,
+      { width: this.w * this.dpr, height: this.h * this.dpr },
+      surfaceCount,
+      this.isMobile ? Math.min(this.w * 0.55, this.h * 0.45) : Math.min(this.w * 0.35, this.h * 0.55)
+    );
+
+    this.edgePointsData = edgePoints.map(p => ({
+      x: p.x / this.dpr,
+      y: p.y / this.dpr
+    }));
+
+    // ─── Layer 2: Logo Surface Particles ───
+    for (let i = 0; i < points.length; i++) {
+      this.surfaceParticles.push(
+        new SurfaceParticle(points[i].x / this.dpr, points[i].y / this.dpr)
+      );
     }
 
-    // Set fill color once (gold)
-    this.ctx.fillStyle = '#D4AF37';
-
-    // Morph to initial text
-    this.morphToText(this.initialText);
-  }
-
-  morphToText(text) {
-    const pts = sampleTextPoints(text, this.count);
-    this._applyShape(pts, 'text');
-  }
-
-  morphToShape(shapeName) {
-    let pts;
-    switch (shapeName) {
-      case 'skyline': pts = generateSkylineShape(this.count); break;
-      case 'house': pts = generateHouseShape(this.count); break;
-      case 'key': pts = generateKeyShape(this.count); break;
-      default: pts = generateHouseShape(this.count);
+    // ─── Layer 3: Edge Accent Particles ───
+    const edgeCount = this.isMobile ? 6 : 15;
+    for (let i = 0; i < edgeCount; i++) {
+      this.edgeParticles.push(new EdgeParticle(this.edgePointsData));
     }
-    this._applyShape(pts, shapeName);
   }
 
   scatter() {
-    this.particles.forEach(p => {
-      p.setTarget(
-        this.cx + (Math.random() - 0.5) * this.w * 0.9,
-        this.cy + (Math.random() - 0.5) * this.h * 0.9
-      );
-      p.baseAlpha = 0.08 + Math.random() * 0.15;
+    this.surfaceParticles.forEach(p => {
+      p.homeX = this.cx + (Math.random() - 0.5) * this.w * 0.95;
+      p.homeY = this.cy + (Math.random() - 0.5) * this.h * 0.95;
+      p.baseAlpha = 0.06 + Math.random() * 0.12;
       p.size = 0.2 + Math.random() * 0.5;
     });
   }
 
-  _applyShape(pts, shapeName) {
-    this.currentShape = shapeName;
-    // On mobile, use a wider text spread so letters are larger and more readable
-    const scaleX = this.isMobile ? this.w * 0.55 : this.w * 0.38;
-    const scaleY = this.isMobile ? this.h * 0.28 : this.h * 0.38;
-    const offsetY = this.isMobile ? -this.h * 0.10 : -this.h * 0.05;
+  morphToText(text) {
+    this.initialText = text;
+    const surfaceCount = this.isMobile ? 4000 : 8000;
+    const { points, edgePoints } = sampleLogoPoints(
+      text,
+      { width: this.w * this.dpr, height: this.h * this.dpr },
+      surfaceCount,
+      this.isMobile ? Math.min(this.w * 0.55, this.h * 0.45) : Math.min(this.w * 0.35, this.h * 0.55)
+    );
 
-    this.particles.forEach((p, i) => {
-      if (i < pts.length) {
-        p.setTarget(
-          this.cx + pts[i].x * scaleX,
-          this.cy + pts[i].y * scaleY + offsetY
-        );
-        // On mobile: bigger particles and higher alpha for readability
-        if (this.isMobile) {
-          p.baseAlpha = 0.55 + Math.random() * 0.4;
-          p.size = 0.6 + Math.random() * 1.2;
-          p.isHighlight = Math.random() < 0.18;
-          p.glowSize = 3 + Math.random() * 5;
-        } else {
-          p.baseAlpha = 0.3 + Math.random() * 0.55;
-          p.size = 0.3 + Math.random() * 0.9;
-          p.isHighlight = Math.random() < 0.08;
-        }
+    this.edgePointsData = edgePoints.map(p => ({
+      x: p.x / this.dpr,
+      y: p.y / this.dpr
+    }));
+
+    this.surfaceParticles.forEach((p, i) => {
+      if (i < points.length) {
+        p.homeX = points[i].x / this.dpr;
+        p.homeY = points[i].y / this.dpr;
+        p.baseAlpha = 0.55 + Math.random() * 0.35;
+        p.size = 0.6 + Math.random() * 1.2;
+        p.scattered = false;
       } else {
-        // Excess particles float as ambient dust around the shape
-        p.setTarget(
-          this.cx + (Math.random() - 0.5) * this.w * 0.7,
-          this.cy + (Math.random() - 0.5) * this.h * 0.7
-        );
-        p.baseAlpha = 0.04 + Math.random() * 0.1;
+        p.homeX = this.cx + (Math.random() - 0.5) * this.w * 0.85;
+        p.homeY = this.cy + (Math.random() - 0.5) * this.h * 0.85;
+        p.baseAlpha = 0.04 + Math.random() * 0.08;
         p.size = 0.2 + Math.random() * 0.4;
-        p.isHighlight = false;
       }
+    });
+
+    this.edgeParticles.forEach(ep => {
+      ep.edgePoints = this.edgePointsData;
+      ep.progress = Math.random();
     });
   }
 
   pause() {
     if (this._paused) return;
     this._paused = true;
-    if (this._rafId) {
-      cancelAnimationFrame(this._rafId);
-      this._rafId = null;
-    }
+    if (this._rafId) { cancelAnimationFrame(this._rafId); this._rafId = null; }
   }
 
   resume() {
@@ -360,18 +396,18 @@ export class GlitterSystem {
   _bind() {
     window.addEventListener('resize', () => {
       this._resize();
-      if (this.currentShape === 'text') {
-        this.morphToText(this.initialText);
-      }
+      // Rebuild particles on resize
+      this.atmosphereParticles = [];
+      this.surfaceParticles = [];
+      this.edgeParticles = [];
+      this._init();
     });
 
-    // Pause when tab is hidden
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) this.pause();
       else this.resume();
     });
 
-    // Pause/resume on mobile menu toggle
     document.addEventListener('menu-toggle', e => {
       if (e.detail && e.detail.open) this.pause();
       else this.resume();
@@ -400,41 +436,44 @@ export class GlitterSystem {
     const oc = this._offCtx;
     const mc = this.ctx;
 
-    // Clear both canvases
     oc.clearRect(0, 0, this.w, this.h);
     mc.clearRect(0, 0, this.w, this.h);
 
-    // Draw everything to offscreen canvas
-    oc.fillStyle = '#D4AF37';
+    // Breathing glow — extremely subtle sinusoidal brightness variation
+    const breathe = Math.sin(t * 0.3) * 0.5 + Math.sin(t * 0.17) * 0.3;
 
-    // Ambient dust
-    this.ambientDust.forEach(d => {
-      d.x += d.vx;
-      d.y += d.vy;
-      if (d.y < -5) { d.y = this.h + 5; d.x = Math.random() * this.w; }
-      if (d.x < -5) d.x = this.w + 5;
-      if (d.x > this.w + 5) d.x = -5;
-      oc.globalAlpha = d.alpha;
-      oc.fillRect(d.x, d.y, d.size, d.size);
-    });
-
-    // Main particles
-    for (let i = 0; i < this.particles.length; i++) {
-      this.particles[i].update(t, this.mx, this.my, this.mActive);
-      this.particles[i].draw(oc);
+    // ─── Layer 1: Background Atmosphere ───
+    for (const p of this.atmosphereParticles) {
+      p.update(t);
+      p.draw(oc);
     }
+
+    // ─── Layer 2: Logo Surface Particles ───
+    for (const p of this.surfaceParticles) {
+      p.update(t, this.mx, this.my, this.mActive, breathe, true);
+      p.draw(oc);
+    }
+
+    // ─── Layer 3: Edge Accent Particles ───
+    for (const p of this.edgeParticles) {
+      p.update(t);
+      p.draw(oc);
+    }
+
     oc.globalAlpha = 1;
 
-    // COMPOSITE: Layer 1 — blurred glow (skip on mobile for performance)
+    // ─── COMPOSITING ───
+
+    // Layer 1 — Soft glow (skip on mobile for performance)
     if (!this.isMobile) {
       mc.save();
-      mc.filter = 'blur(5px)';
-      mc.globalAlpha = 0.6;
+      mc.filter = 'blur(2px)';
+      mc.globalAlpha = 0.35 + breathe * 0.04;
       mc.drawImage(this._offscreen, 0, 0, this.w, this.h);
       mc.restore();
     }
 
-    // COMPOSITE: Layer 2 — sharp crisp particles on top
+    // Layer 2 — Crisp particles
     mc.drawImage(this._offscreen, 0, 0, this.w, this.h);
 
     this._rafId = requestAnimationFrame(ts2 => this._loop(ts2));

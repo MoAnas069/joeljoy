@@ -1,13 +1,13 @@
 /* ═══════════════════════════════════════════════════════════════
-   HOMEPAGE MAIN — Minimal Gateway
+   HOMEPAGE MAIN — Cinematic Gold Dust Experience
    ═══════════════════════════════════════════════════════════════ */
 
 import { GlitterSystem } from './particles.js';
-import { initNavigation, initRevealAnimations, initSmoothScroll, initCountUp } from './nav.js';
+import { initNavigation, initRevealAnimations, initSmoothScroll } from './nav.js';
 
 document.fonts.ready.then(() => {
-  // Initialize micro-glitter particle system
-  const glitter = new GlitterSystem('particle-canvas', 'THE J');
+  // Initialize cinematic particle system
+  const glitter = new GlitterSystem('particle-canvas', 'JR');
 
   // After particles form THE J, schedule a subtle scroll-triggered scatter
   let scattered = false;
@@ -18,12 +18,11 @@ document.fonts.ready.then(() => {
     }
     if (scattered && window.scrollY < 100) {
       scattered = false;
-      glitter.morphToText('THE J');
+      glitter.morphToText('JR');
     }
   });
 
   initNavigation();
   initRevealAnimations();
   initSmoothScroll();
-  initCountUp();
 });
